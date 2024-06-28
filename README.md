@@ -14,7 +14,7 @@ An additional "Clear History" button allows users to clear all stored search his
 ## Responsive Design:
 The interface adjusts dynamically to different screen sizes using CSS media queries. This ensures that the search container and buttons remain visually appealing and functional on both desktop and mobile devices.
 
-# Usage
+## Usage
 Enter a search query in the input field.
 Press "Search" or hit Enter to perform the search.
 Click on "Visited Links" to view and revisit previously searched queries.
