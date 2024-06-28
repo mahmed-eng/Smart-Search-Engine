@@ -30,8 +30,8 @@ Event listeners are utilized to capture user interactions, such as form submissi
 ## Dynamic Dropdown:
 A dynamic dropdown menu is implemented using JavaScript to display visited links as the user types or clicks the "Visited Links" button. This dropdown is styled to enhance usability and provide quick access to historical search queries.
 
-# Contributing
-## Contributions are welcome! If you have suggestions or feature requests, please open an issue or submit a pull request.
+## Contributing
+ Contributions are welcome! If you have suggestions or feature requests, please open an issue or submit a pull request.
 
-# License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
