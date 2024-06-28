@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Responsive & Attractive Search Engine</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2; /* Background color for the entire page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .search-container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 90%;
+            width: 400px;
+            position: relative;
+        }
+
+        .search-container h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .search-container h1 span {
+            color: #007BFF; /* Text color for the span */
+        }
+
+        input[type="text"] {
+            width: calc(100% - 80px);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+
+        button {
+            width: 80px;
+            padding: 12px 0;
+            margin-left: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .visited-links-button, .clear-history-button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .visited-links-button {
+            background-color: #28a745;
+        }
+
+        .visited-links-button:hover {
+            background-color: #218838;
+        }
+
+        .clear-history-button {
+            background-color: #dc3545;
+        }
+
+        .clear-history-button:hover {
+            background-color: #c82333;
+        }
+
+        .dropdown {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: calc(100% - 80px);
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 10;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .dropdown-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown-item a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+
+        @media (max-width: 480px) {
+            .search-container {
+                width: 90%;
+            }
+
+            input[type="text"] {
+                width: calc(100% - 70px);
+            }
+
+            button {
+                width: 70px;
+                margin-left: 5px;
+            }
+
+            .dropdown {
+                width: calc(100% - 70px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Super <span>Search</span></h1>
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Enter your search query...">
+            <button type="submit">Search</button>
+        </form>
+        <button id="visitedLinksButton" class="visited-links-button" style="display: none;">Visited Links</button>
+        <button id="clearHistoryButton" class="clear-history-button" style="display: none;">Clear History</button>
+        <div id="dropdown" class="dropdown"></div>
+    </div>
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const dropdown = document.getElementById('dropdown');
+        const visitedLinksButton = document.getElementById('visitedLinksButton');
+        const clearHistoryButton = document.getElementById('clearHistoryButton');
+        let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+        document.getElementById('searchForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+            const query = searchInput.value.trim();
+            if (query !== "") {
+                const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                window.location.href = searchUrl; // Redirect to the search results
+                addToHistory(searchUrl);
+            } else {
+                alert("Please enter a search query.");
+            }
+        });
+
+        visitedLinksButton.addEventListener('click', function() {
+            if (searchHistory.length > 0) {
+                showDropdown(searchHistory);
+            } else {
+                alert("No visited links found.");
+            }
+        });
+
+        clearHistoryButton.addEventListener('click', function() {
+            clearHistory();
+        });
+
+        function addToHistory(url) {
+            if (!searchHistory.includes(url)) {
+                searchHistory.push(url);
+                localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                visitedLinksButton.style.display = 'block';
+                clearHistoryButton.style.display = 'block';
+            }
+        }
+
+        function showDropdown(items) {
+            dropdown.innerHTML = '';
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'dropdown-item';
+                const a = document.createElement('a');
+                a.href = item;
+                a.textContent = item;
+                a.target = '_blank';
+                div.appendChild(a);
+                dropdown.appendChild(div);
+            });
+            dropdown.style.display = 'block';
+        }
+
+        function clearHistory() {
+            searchHistory = [];
+            localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+            dropdown.innerHTML = '';
+            visitedLinksButton.style.display = 'none';
+            clearHistoryButton.style.display = 'none';
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.search-container')) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        if (searchHistory.length > 0) {
+            visitedLinksButton.style.display = 'block';
+            clearHistoryButton.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
