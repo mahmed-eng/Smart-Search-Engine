@@ -35,3 +35,4 @@ A dynamic dropdown menu is implemented using JavaScript to display visited links
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
+### Hosting URL: https://smart-search-42b20.web.app
